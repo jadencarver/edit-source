@@ -5,7 +5,19 @@ BINS="$HOME/.local/bin"
 SCHEMEMIME="x-scheme-handler/edit-source"
 
 cd "$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-cp "./edit-source-url.desktop" "$APPS/."
+
+echo "[Desktop Entry]
+Name=Edit Source Protocol Handler
+GenericName=Edit Source Protocol Handler
+Comment=Enables links to edit files from the browser
+Icon=document-edit
+TryExec=$BINS/edit-source-url
+Exec=$BINS/edit-source-url %u
+Terminal=false
+Type=Application
+Categories=Accessories
+MimeType=x-scheme-handler/edit-source
+NoDisplay=true" > "$APPS/edit-source-url.desktop"
 cp "./edit-source-url" "$BINS/."
 
 if [ ! -e "$APPS/mimeapps.list" ]; then
