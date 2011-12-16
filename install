@@ -1,0 +1,27 @@
+#!/bin/bash
+
+APPS="$HOME/.local/share/applications"
+BINS="$HOME/.local/bin"
+SCHEMEMIME="x-scheme-handler/edit-source"
+
+cd "$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+cp "./edit-source-url.desktop" "$APPS/."
+cp "./edit-source-url" "$BINS/."
+
+if [ ! -e "$APPS/mimeapps.list" ]; then
+  echo "[Added Associations]" > "$APPS/mimeapps.list"
+fi
+
+if grep "$SCHEMEMIME" "$APPS/mimeapps.list" &>/dev/null; then
+  echo "edit-source schema already registered - skipping"
+else
+  echo "x-scheme-handler/edit-source=edit-source.desktop"
+  LINE=`grep -n "\[Added Associations\]" "$APPS/mimeapps.list" | cut -d: -f1`
+  let LINE=$LINE+1
+  if [ ! $LINE == '' ]; then
+    sed "$LINE i${SCHEMEMIME}=edit-source-url.desktop" "$APPS/mimeapps.list" > "$APPS/mimeapps.list.new"
+  else
+    echo -e "[Added Associations]\n${SCHEMEMIME}=edit-source-url.desktop" >> "$APPS/mimeapps.list.new"
+  fi
+  mv "$APPS/mimeapps.list.new" "$APPS/mimeapps.list"
+fi
