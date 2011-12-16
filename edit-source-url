@@ -1,5 +1,6 @@
 #!/bin/bash
 
-LINE=`echo $1 | cut -d? -f2`
-FILE=`echo ${1#edit-source:} | cut -d? -f1`
+URI=`echo ${1#edit-source:}`
+LINE=`echo $URI | cut -d? -f2`
+FILE=`echo $URI | cut -d? -f1`
 gvim --remote-tab "+$LINE" "$FILE"
